@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Eventos por Día</title>
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="container py-4">
+	<h1>Eventos agrupados por día</h1>
+	<a href="/evento/form" class="btn btn-primary mb-3">Nuevo evento</a>
+
+	<div th:if="${agrupados == null or #maps.isEmpty(agrupados)}">
+		<p>No hay eventos registrados.</p>
+	</div>
+
+
+	<div th:if="${resultados != null}">
+		<h3>Resultados:</h3>
+		<ul class="list-group mb-3">
+			<li class="list-group-item" th:each="ev : ${resultados}">
+				<h5 th:text="${ev.titulo}"></h5>
+				<p
+					th:text="${ev.descripcion != null && ev.descripcion.length() > 0 ? ev.descripcion : '— sin descripción —'}"></p>
+				<small>Responsable: <span th:text="${ev.responsable}"></span></small>
+			</li>
+		</ul>
+	</div>
+
+	<div th:each="entry : ${agrupados}">
+		<div class="card mb-3">
+			<div class="card-header">
+				<strong th:text="${#temporals.format(entry.key,'dd-MM-yyyy')}"></strong>
+			</div>
+			<ul class="list-group list-group-flush">
+				<li class="list-group-item" th:each="ev : ${entry.value}">
+					<h5 th:text="${ev.titulo}"></h5>
+					<p
+						th:text="${ev.descripcion != null && ev.descripcion.length() > 0 ? ev.descripcion : '— sin descripción —'}"></p>
+					<small>Responsable: <span th:text="${ev.responsable}"></span></small>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+</body>
+</html>
